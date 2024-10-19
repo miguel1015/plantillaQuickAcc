@@ -85,22 +85,25 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: theme.palette.primary.main,
   "& .MuiDrawer-paper": {
-    backgroundColor: myTheme.palette.secondary.main,
+    backgroundColor: myTheme.palette.primary.main,
+    color: myTheme.palette.secondary.main,
   },
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": {
       ...openedMixin(theme),
-      backgroundColor: myTheme.palette.secondary.main,
+      backgroundColor: myTheme.palette.primary.main,
+      color: myTheme.palette.secondary.main,
     },
   }),
   ...(!open && {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": {
       ...closedMixin(theme),
-      backgroundColor: myTheme.palette.secondary.main,
+      backgroundColor: myTheme.palette.primary.main,
+      color: myTheme.palette.secondary.main,
     },
   }),
 }));
@@ -175,7 +178,10 @@ export default function MiniDrawer({ children }: any) {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={[{ marginRight: 5 }, open && { display: "none" }]}
+            sx={[
+              { marginRight: 5, color: "white" },
+              open && { display: "none" },
+            ]}
           >
             <MenuIcon />
           </IconButton>
@@ -238,18 +244,18 @@ export default function MiniDrawer({ children }: any) {
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open} sx={{ background: "#d44134" }}>
-        <DrawerHeader sx={{ background: "#d44134" }}>
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon sx={{ color: "white" }} />
             )}
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List sx={{ background: "#d44134" }}>
+        <List>
           {menuItems.map(({ label, icon, subItems }) => (
             <React.Fragment key={label}>
               <ListItem disablePadding sx={{ display: "block" }}>
@@ -266,6 +272,7 @@ export default function MiniDrawer({ children }: any) {
                       minWidth: 0,
                       justifyContent: "center",
                       mr: open ? 3 : "auto",
+                      color: "white",
                     }}
                   >
                     {icon}
@@ -291,7 +298,13 @@ export default function MiniDrawer({ children }: any) {
                       <ListItem
                         key={subtext?.label}
                         disablePadding
-                        sx={{ pl: 4 }}
+                        sx={{
+                          pl: 4,
+                          backgroundColor: "#dd685e",
+                          "&:hover": {
+                            backgroundColor: "#efb7b2",
+                          },
+                        }}
                       >
                         <ListItemButton
                           sx={{
