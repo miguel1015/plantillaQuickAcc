@@ -3,9 +3,8 @@ import { GetCharactersResponse } from "../../types/rick/userTypes";
 import apiRick from "../../apiClients/rick/todoClient";
 
 const getCharacters = async () => {
-  const { data } = await apiRick.get<GetCharactersResponse>(
-    "/character/?page=2"
-  );
+  const { data } =
+    await apiRick.get<GetCharactersResponse>("/character/?page=1");
   return data;
 };
 
