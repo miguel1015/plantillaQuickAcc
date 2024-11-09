@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   CircularProgress,
   Typography,
@@ -13,11 +13,24 @@ import { useFetchCharacters } from "../../hooks/useRick";
 import { useStyles } from "./styled";
 import NavNavigation from "./buttonNavigation";
 import InfoIcon from "@mui/icons-material/Info";
+import CharacterModal from "./buttonNavigation/CharacterModal";
 
 const RickC: React.FC = () => {
   const classes = useStyles();
 
   const { data, isLoading, error } = useFetchCharacters();
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = (character: Character) => {
+    setSelectedCharacter(character);
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCharacter(null);
+  };
 
   if (isLoading) return <CircularProgress />;
   if (error) return <Typography>Error loading characters</Typography>;
@@ -43,13 +56,20 @@ const RickC: React.FC = () => {
                   aria-label={`info about ${character?.name}`}
                 >
                   <InfoIcon />
-                  <Button>Ver más</Button>
+                  <Button onClick={() => handleOpenModal(character)}>
+                    Ver más
+                  </Button>
                 </IconButton>
               }
             />
           </ImageListItem>
         ))}
       </Grid>
+      <CharacterModal
+        character={selectedCharacter}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </Box>
   );
 };
