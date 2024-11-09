@@ -17,7 +17,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness4Icon from "@mui/icons-material/Brightness4";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Collapse from "@mui/material/Collapse";
@@ -27,10 +27,11 @@ import {
   Badge,
   Menu,
   MenuItem,
+  ThemeProvider,
   Tooltip,
   Typography,
 } from "@mui/material";
-import myTheme from "../../theme";
+import myTheme, { darkTheme } from "../../theme";
 
 const drawerWidth = 240;
 
@@ -113,6 +114,7 @@ export default function MiniDrawer({ children }: any) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [inboxOpen, setInboxOpen] = React.useState(false);
+  const [isDarkMode, setIsDarkMode] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -138,6 +140,10 @@ export default function MiniDrawer({ children }: any) {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const toggleTheme = () => {
+    setIsDarkMode((prev) => !prev);
   };
 
   // Array de módulos y submodules
@@ -170,178 +176,181 @@ export default function MiniDrawer({ children }: any) {
   ];
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={[
-              { marginRight: 5, color: "white" },
-              open && { display: "none" },
-            ]}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Box sx={{ flexGrow: 1 }} />
-          <MenuItem>
+    <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
             <IconButton
-              size="large"
-              aria-label="show 4 new mails"
               color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={[
+                { marginRight: 5, color: "white" },
+                open && { display: "none" },
+              ]}
             >
-              <Brightness4Icon />
+              <MenuIcon />
             </IconButton>
-          </MenuItem>
-          <MenuItem>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-          </MenuItem>
-          <MenuItem>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="secondary"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </MenuItem>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://wallpapers.com/images/high/4k-ultra-hd-naruto-close-up-portrait-elmqkatj1ig95l07.webp"
-                />
+            <Box sx={{ flexGrow: 1 }} />
+            <MenuItem>
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+                onClick={toggleTheme}
+              >
+                <Brightness4Icon />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon sx={{ color: "white" }} />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {menuItems.map(({ label, icon, subItems }) => (
-            <React.Fragment key={label}>
-              <ListItem disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  onClick={subItems.length > 0 ? toggleInbox : undefined}
-                  sx={{
-                    minHeight: 48,
-                    px: 2.5,
-                    justifyContent: open ? "initial" : "center",
-                  }}
-                >
-                  <ListItemIcon
+            </MenuItem>
+            <MenuItem>
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+              >
+                <Badge badgeContent={4} color="error">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+            </MenuItem>
+            <MenuItem>
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="secondary"
+              >
+                <Badge badgeContent={17} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </MenuItem>
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="https://wallpapers.com/images/high/4k-ultra-hd-naruto-close-up-portrait-elmqkatj1ig95l07.webp"
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography sx={{ textAlign: "center" }}>
+                      {setting}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon sx={{ color: "white" }} />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List sx={{ backgroun: "primary" }}>
+            {menuItems.map(({ label, icon, subItems }) => (
+              <React.Fragment key={label}>
+                <ListItem disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
+                    onClick={subItems.length > 0 ? toggleInbox : undefined}
                     sx={{
-                      minWidth: 0,
-                      justifyContent: "center",
-                      mr: open ? 3 : "auto",
-                      color: "white",
+                      minHeight: 48,
+                      px: 2.5,
+                      justifyContent: open ? "initial" : "center",
                     }}
                   >
-                    {icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={label}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                  {subItems.length > 0 &&
-                    (open ? (
-                      inboxOpen ? (
-                        <ExpandLessIcon />
-                      ) : (
-                        <ExpandMoreIcon />
-                      )
-                    ) : null)}
-                </ListItemButton>
-              </ListItem>
-              {subItems.length > 0 && (
-                <Collapse in={inboxOpen} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    {subItems.map((subtext) => (
-                      <ListItem
-                        key={subtext?.label}
-                        disablePadding
-                        sx={{
-                          pl: 4,
-                          backgroundColor: "#dd685e",
-                          "&:hover": {
-                            backgroundColor: "#efb7b2",
-                          },
-                        }}
-                      >
-                        <ListItemButton
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        justifyContent: "center",
+                        mr: open ? 3 : "auto",
+                        color: "white",
+                      }}
+                    >
+                      {icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={label}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                    {subItems.length > 0 &&
+                      (open ? (
+                        inboxOpen ? (
+                          <ExpandLessIcon />
+                        ) : (
+                          <ExpandMoreIcon />
+                        )
+                      ) : null)}
+                  </ListItemButton>
+                </ListItem>
+                {subItems.length > 0 && (
+                  <Collapse in={inboxOpen} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      {subItems.map((subtext) => (
+                        <ListItem
+                          key={subtext?.label}
+                          disablePadding
                           sx={{
-                            minHeight: 48,
-                            px: 2.5,
-                            justifyContent: open ? "initial" : "center",
+                            pl: 4,
+                            backgroundColor: "#dd685e",
+                            "&:hover": {
+                              backgroundColor: "#efb7b2",
+                            },
                           }}
                         >
-                          <ListItemText
-                            primary={subtext?.label}
-                            sx={{ opacity: open ? 1 : 0 }}
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                    ))}
-                  </List>
-                </Collapse>
-              )}
-            </React.Fragment>
-          ))}
-        </List>
-        <Divider />
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        {children}
+                          <ListItemButton
+                            sx={{
+                              minHeight: 48,
+                              px: 2.5,
+                              justifyContent: open ? "initial" : "center",
+                            }}
+                          >
+                            <ListItemText
+                              primary={subtext?.label}
+                              sx={{ opacity: open ? 1 : 0 }}
+                            />
+                          </ListItemButton>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Collapse>
+                )}
+              </React.Fragment>
+            ))}
+          </List>
+          <Divider />
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 }
