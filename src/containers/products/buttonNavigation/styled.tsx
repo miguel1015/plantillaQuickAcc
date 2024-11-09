@@ -37,4 +37,16 @@ export const useStyles = makeStyles({
       backgroundColor: "#c13124",
     },
   },
+  modal: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: 8,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    outline: "none",
+  },
 });
