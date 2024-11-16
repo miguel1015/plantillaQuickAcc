@@ -31,7 +31,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
 import myTheme, { darkTheme } from "../../theme";
+import { Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -348,7 +350,7 @@ export default function MiniDrawer({ children }: any) {
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
-          {children}
+          <Outlet />
         </Box>
       </Box>
     </ThemeProvider>

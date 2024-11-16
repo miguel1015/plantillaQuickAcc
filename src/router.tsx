@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
+import Layout from "./components/layout";
 
 export const router = createBrowserRouter([
   {
@@ -7,7 +8,13 @@ export const router = createBrowserRouter([
     Component: lazy(() => import("./containers/products/index")),
   },
   {
-    path: "/home",
-    Component: lazy(() => import("../src/pages/home/index")),
+    path: "/dashboard",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        Component: lazy(() => import("./pages/home/index")),
+      },
+    ],
   },
 ]);
