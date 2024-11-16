@@ -1,12 +1,7 @@
-import Layout from "../../components/layout";
 import Home from "../../containers/home/home";
 
 const HomePage = () => {
-  return (
-    <Layout>
-      <Home />
-    </Layout>
-  );
+  return <Home />;
 };
 
 export default HomePage;

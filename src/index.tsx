@@ -1,13 +1,13 @@
-import { ThemeProvider } from "@mui/material/styles";
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { RouterProvider } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import "./index.css";
-import reportWebVitals from "./reportWebVitals";
-import { router } from "./router";
+import React from "react";
 import theme from "./theme";
+import { router } from "./router";
+import ReactDOM from "react-dom/client";
+import reportWebVitals from "./reportWebVitals";
+import { ToastContainer } from "react-toastify";
+import { RouterProvider } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 

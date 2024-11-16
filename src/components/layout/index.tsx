@@ -30,7 +30,7 @@ import {
   Typography,
 } from "@mui/material";
 import myTheme from "../../theme";
-import {Outlet} from "react-router-dom"
+import { Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -109,7 +109,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function MiniDrawer({ children }: any) {
+export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [inboxOpen, setInboxOpen] = React.useState(false);

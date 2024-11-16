@@ -8,6 +8,10 @@ export const router = createBrowserRouter([
     Component: lazy(() => import("./containers/products/index")),
   },
   {
+    path: "/login",
+    Component: lazy(() => import("./containers/login/login")),
+  },
+  {
     path: "/dashboard",
     element: <Layout />,
     children: [
