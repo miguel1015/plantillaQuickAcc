@@ -1,14 +1,36 @@
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Checkbox,
-  FormControlLabel,
-} from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import InputAdapter from "../../components/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Box, Button, Typography } from "@mui/material";
+// import { useFetchLogin } from "../../hooks/login/loginHook";
 
 const Login = () => {
+  // const { data } = useFetchLogin();
+
+  const schema = z.object({
+    email: z.string().min(1, { message: "Campo requerido" }),
+    password: z.string().min(1, { message: "Campo requerido" }),
+  });
+
+  /**
+   * UseForm
+   */
+  const {
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    control,
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  // console.log("🔥🔥🔥", data);
+
+  const handleForm = () => {
+    console.log(getValues());
+  };
+
   return (
     <Box
       sx={{
@@ -32,7 +54,6 @@ const Login = () => {
           backgroundColor: "#fff",
         }}
       >
-        {/* Form Section */}
         <Box
           sx={{
             flex: 1,
@@ -45,39 +66,25 @@ const Login = () => {
           <Typography variant="h5" gutterBottom>
             Registration Form
           </Typography>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField fullWidth label="First Name" variant="outlined" />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField fullWidth label="Last Name" variant="outlined" />
-            </Grid>
-          </Grid>
-          <TextField
-            fullWidth
-            label="Email"
-            variant="outlined"
-            sx={{ marginTop: "16px" }}
+          <InputAdapter
+            id="email"
+            type="text"
+            name="email"
+            label="email"
+            error={errors?.email}
+            schema={schema?.shape?.email}
+            control={control}
           />
-          <TextField
-            fullWidth
-            label="Password"
+          <InputAdapter
+            id="password"
             type="password"
-            variant="outlined"
-            sx={{ marginTop: "16px" }}
+            name="password"
+            label="password"
+            error={errors?.password}
+            schema={schema?.shape?.password}
+            control={control}
           />
-          <TextField
-            fullWidth
-            label="Confirm Password"
-            type="password"
-            variant="outlined"
-            sx={{ marginTop: "16px" }}
-          />
-          <FormControlLabel
-            control={<Checkbox />}
-            label="I accept the Terms of Use & Privacy Policy."
-            sx={{ marginTop: "16px" }}
-          />
+
           <Button
             fullWidth
             sx={{
@@ -90,6 +97,7 @@ const Login = () => {
                 backgroundColor: "#b83228",
               },
             }}
+            onClick={handleSubmit(handleForm)}
           >
             Register Now
           </Button>
