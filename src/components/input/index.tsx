@@ -39,10 +39,7 @@ const InputAdapter: FC<TInputAdapter> = ({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const normalizedEvent = {
       ...e,
-      target: {
-        ...e.target,
-        value: e.target.value.replaceAll(".", ""),
-      },
+      target: { ...e.target },
     };
     onChange(normalizedEvent);
     customOnChange?.(normalizedEvent);
@@ -71,9 +68,6 @@ const InputAdapter: FC<TInputAdapter> = ({
             borderColor: "#6bdbc2",
             border: "0px solid",
             outline: 0,
-            // boxShadow: !error
-            //    "0 0 0 0.2rem rgb(1 104 250 / 20%)"
-            //   : "0 0 0 0.2rem rgb(220 53 69 / 25%)",
           },
           "& .MuiFormHelperText-root": {
             marginLeft: "0px",

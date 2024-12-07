@@ -1,26 +1,10 @@
-import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import MuiDrawer from "@mui/material/Drawer";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import Collapse from "@mui/material/Collapse";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MailIcon from "@mui/icons-material/Mail";
+import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
   Avatar,
@@ -31,10 +15,26 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import MuiDrawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import * as React from "react";
 // import myTheme from "../../theme";
 
-import myTheme, { darkTheme } from "../../theme";
 import { Outlet } from "react-router-dom";
+import myTheme, { darkTheme } from "../../theme";
+import { menuItems } from "./menuItems";
 
 const drawerWidth = 240;
 
@@ -71,48 +71,6 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  marginLeft: open ? drawerWidth : 0,
-  width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  backgroundColor: theme.palette.primary.main,
-  "& .MuiDrawer-paper": {
-    backgroundColor: myTheme.palette.primary.main,
-    color: myTheme.palette.secondary.main,
-  },
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": {
-      ...openedMixin(theme),
-      backgroundColor: myTheme.palette.primary.main,
-      color: myTheme.palette.secondary.main,
-    },
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": {
-      ...closedMixin(theme),
-      backgroundColor: myTheme.palette.primary.main,
-      color: myTheme.palette.secondary.main,
-    },
-  }),
-}));
-
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -121,6 +79,48 @@ export default function MiniDrawer() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== "open",
+  })<AppBarProps>(({ theme, open }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    marginLeft: open ? drawerWidth : 0,
+    width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  }));
+
+  const Drawer = styled(MuiDrawer, {
+    shouldForwardProp: (prop) => prop !== "open",
+  })(({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+    boxSizing: "border-box",
+    backgroundColor: theme.palette.primary.main,
+    "& .MuiDrawer-paper": {
+      backgroundColor: isDarkMode ? darkTheme : myTheme.palette.primary.main,
+      color: myTheme.palette.secondary.main,
+    },
+    ...(open && {
+      ...openedMixin(theme),
+      "& .MuiDrawer-paper": {
+        ...openedMixin(theme),
+        backgroundColor: isDarkMode ? darkTheme : myTheme.palette.primary.main,
+        color: myTheme.palette.secondary.main,
+      },
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      "& .MuiDrawer-paper": {
+        ...closedMixin(theme),
+        backgroundColor: isDarkMode ? darkTheme : myTheme.palette.primary.main,
+        color: myTheme.palette.secondary.main,
+      },
+    }),
+  }));
 
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -148,35 +148,6 @@ export default function MiniDrawer() {
   const toggleTheme = () => {
     setIsDarkMode((prev) => !prev);
   };
-
-  // Array de módulos y submodules
-  const menuItems = [
-    {
-      label: "Productos",
-      icon: <InboxIcon />,
-      subItems: [{ label: "Carnes" }, { label: "Subitem 2" }],
-    },
-    {
-      label: "Starred",
-      icon: <InboxIcon />,
-      subItems: [],
-    },
-    {
-      label: "Send email",
-      icon: <MailIcon />,
-      subItems: [],
-    },
-    {
-      label: "Drafts",
-      icon: <MailIcon />,
-      subItems: [],
-    },
-    {
-      label: "Other",
-      icon: <MailIcon />,
-      subItems: [],
-    },
-  ];
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
@@ -276,8 +247,8 @@ export default function MiniDrawer() {
             </IconButton>
           </DrawerHeader>
           <Divider />
-          <List sx={{ backgroun: "primary" }}>
-            {menuItems.map(({ label, icon, subItems }) => (
+          <List sx={{ background: "primary" }}>
+            {menuItems?.map(({ label, icon, subItems }) => (
               <React.Fragment key={label}>
                 <ListItem disablePadding sx={{ display: "block" }}>
                   <ListItemButton
@@ -302,7 +273,7 @@ export default function MiniDrawer() {
                       primary={label}
                       sx={{ opacity: open ? 1 : 0 }}
                     />
-                    {subItems.length > 0 &&
+                    {subItems?.length > 0 &&
                       (open ? (
                         inboxOpen ? (
                           <ExpandLessIcon />
@@ -312,10 +283,10 @@ export default function MiniDrawer() {
                       ) : null)}
                   </ListItemButton>
                 </ListItem>
-                {subItems.length > 0 && (
+                {subItems?.length > 0 && (
                   <Collapse in={inboxOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                      {subItems.map((subtext) => (
+                      {subItems?.map((subtext) => (
                         <ListItem
                           key={subtext?.label}
                           disablePadding
